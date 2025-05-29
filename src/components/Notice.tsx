@@ -28,22 +28,37 @@ const Notice = () => {
   // Estado para controlar qual aba está ativa: 'daily' (Notícia do Dia) ou 'latest' (Últimas Notícias)
   const [activeTab, setActiveTab] = useState<"daily" | "latest">("daily");
 
-  // **URLs dos Endpoints do Backend:**
-  // A URL para o endpoint que busca as últimas notícias da API de Imagem e Vídeo da NASA.
+  // --- URLs dos Endpoints do Backend (AGORA OTIMIZADAS PARA VERCEL) ---
+  //
+  // As variáveis de ambiente (VITE_...) são usadas quando o projeto está em produção na Vercel.
+  // Se elas não existirem (ou seja, quando você está desenvolvendo localmente),
+  // ele automaticamente usa os caminhos de proxy para o seu 'localhost:5000'.
+  //
+  // IMPORTANTE:
+  // - No Vercel Dashboard, defina VITE_BACKEND_API_URL_NEWS, VITE_BACKEND_APOD_API_URL e VITE_BACKEND_PROXY_URL
+  //   com valores como "https://astrolobby.vercel.app/api/nasa-news-translated" (use seu próprio domínio da Vercel).
+  // - No seu .env (ou .env.local) na raiz do seu projeto frontend, defina-os para seu "http://localhost:5000/api/..."
+  //   para desenvolvimento local.
+
   const BACKEND_NEWS_API_URL =
     import.meta.env.VITE_BACKEND_API_URL_NEWS ||
-    "http://localhost:5000/api/nasa-news-translated?q=space&page_size=5"; // page_size ajustado para ter mais últimas notícias
+    // **Ajustado:** Caminho relativo para a Serverless Function na Vercel
+    // Se VITE_BACKEND_API_URL_NEWS não estiver definido, usará este caminho.
+    // Lembre-se que para o DEV LOCAL, você deve definir esta variável no seu .env do frontend
+    // ex: VITE_BACKEND_API_URL_NEWS=http://localhost:5000/api/nasa-news-translated?q=space&page_size=5
+    "/api/nasa-news-translated?q=space&page_size=5";
 
-  // A URL para o novo endpoint que busca a Notícia do Dia (APOD).
   const BACKEND_APOD_API_URL =
     import.meta.env.VITE_BACKEND_APOD_API_URL ||
-    "http://localhost:5000/api/nasa-apod";
+    // **Ajustado:** Caminho relativo para a Serverless Function na Vercel
+    // Para DEV LOCAL: VITE_BACKEND_APOD_API_URL=http://localhost:5000/api/nasa-apod
+    "/api/nasa-apod";
 
-  // A URL base para o endpoint de proxy de mídia no seu backend.
-  // Essencial para carregar imagens/vídeos da NASA, contornando problemas de CORS/hotlinking.
   const BACKEND_PROXY_URL =
     import.meta.env.VITE_BACKEND_PROXY_URL ||
-    "http://localhost:5000/api/image-proxy?url=";
+    // **Ajustado:** Caminho relativo para a Serverless Function na Vercel
+    // Para DEV LOCAL: VITE_BACKEND_PROXY_URL=http://localhost:5000/api/image-proxy?url=
+    "/api/image-proxy?url=";
 
   // useEffect para buscar os dados das notícias quando o componente é montado
   useEffect(() => {
@@ -54,6 +69,8 @@ const Notice = () => {
 
         // Faz requisições simultâneas para a APOD e as últimas notícias
         const [apodResponse, newsResponse] = await Promise.all([
+          // As URLs agora são resolvidas automaticamente pela Vercel no deploy
+          // e pelos valores do .env localmente.
           fetch(BACKEND_APOD_API_URL),
           fetch(BACKEND_NEWS_API_URL),
         ]);
@@ -87,10 +104,10 @@ const Notice = () => {
           const [dayB, monthB, yearB] = b.date.split("/");
           const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
 
-          if (isNaN(dateA.getTime())) return 1;
-          if (isNaN(dateB.getTime())) return -1;
+          if (isNaN(dateA.getTime())) return 1; // Coloca datas inválidas no final
+          if (isNaN(dateB.getTime())) return -1; // Coloca datas inválidas no final
 
-          return dateB.getTime() - dateA.getTime();
+          return dateB.getTime() - dateA.getTime(); // Ordem decrescente (mais recente primeiro)
         });
 
         setNewsData(sortedNewsList);
@@ -112,7 +129,7 @@ const Notice = () => {
     };
 
     fetchAllNewsData();
-  }, [BACKEND_NEWS_API_URL, BACKEND_APOD_API_URL]);
+  }, [BACKEND_NEWS_API_URL, BACKEND_APOD_API_URL]); // Dependências: re-executa se as URLs do backend mudarem (o que não deve ocorrer)
 
   // A data da aba agora será a data da notícia do dia, se disponível, senão a data atual.
   const dailyNewsDate = dailyNews
@@ -134,6 +151,7 @@ const Notice = () => {
         {item.media_type === "image" && item.url ? (
           <img
             // Usa o endpoint de proxy do backend para carregar a imagem
+            // BACKEND_PROXY_URL já inclui "?url=", então apenas encodeURIComponent(item.url) é necessário
             src={`${BACKEND_PROXY_URL}${encodeURIComponent(item.url)}`}
             alt={item.title}
             className="rounded-lg object-cover w-full h-auto max-h-96 md:max-h-full shadow-md"
