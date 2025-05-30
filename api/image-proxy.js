@@ -1,6 +1,7 @@
-// api/image-proxy.js ou api/image-proxy/index.js
-// Certifique-se de que você tem 'node-fetch' instalado se for Node.js antigo,
-// ou use o fetch nativo do Node.js 18+
+// api/image-proxy.js
+
+// Importa 'Readable' da API de streams do Node.js.
+import { Readable } from "stream";
 
 export default async function (req, res) {
   // Pega a URL da imagem da query string (ex: /api/image-proxy?url=...)
@@ -12,24 +13,40 @@ export default async function (req, res) {
 
   try {
     // Faz a requisição para a URL da imagem original
+    // O Node.js 18+ tem 'fetch' nativo, mas axios com responseType: 'stream' é outra alternativa.
     const response = await fetch(imageUrl);
 
+    // Verifica se a requisição foi bem-sucedida (status 2xx)
     if (!response.ok) {
+      // Se a imagem original não for encontrada ou houver outro erro HTTP, retorna um erro correspondente
       throw new Error(`Erro ao buscar imagem: ${response.statusText}`);
     }
 
-    // Copia os headers relevantes da resposta original (Content-Type, etc.)
+    // Copia os headers relevantes da resposta original para o cliente (navegador).
+    // Isso é crucial para que o navegador saiba o tipo de conteúdo (image/jpeg, image/png, etc.).
     res.setHeader(
       "Content-Type",
       response.headers.get("Content-Type") || "application/octet-stream"
     );
-    // Adicione headers CORS se necessário (geralmente para Vercel Functions não é preciso se o frontend estiver no mesmo domínio)
-    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // Adiciona headers de cache para que as imagens sejam armazenadas em cache no navegador, melhorando a performance.
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
 
-    // Envia o stream da imagem diretamente para o cliente
-    response.body.pipeTo(res.writable);
+    // --- CORREÇÃO AQUI ---
+    // Converte a Web ReadableStream (response.body) para uma Node.js ReadableStream
+    // e então "pipe" (envia) diretamente para o objeto de resposta do Express (res).
+    // O 'res' é um Node.js Writable Stream, então 'pipe' funciona perfeitamente.
+    Readable.fromWeb(response.body).pipe(res);
   } catch (error) {
     console.error("Erro no proxy de imagem:", error);
-    res.status(500).send("Erro interno do servidor ao processar a imagem.");
+    // Tratamento de erro mais específico:
+    if (error.message && error.message.includes("Not Found")) {
+      res
+        .status(404)
+        .send(
+          "Erro: Imagem não encontrada na origem (URL inválida ou recurso removido)."
+        );
+    } else {
+      res.status(500).send("Erro interno do servidor ao processar a imagem.");
+    }
   }
 }

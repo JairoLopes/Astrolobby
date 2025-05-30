@@ -147,25 +147,37 @@ const Notice = () => {
       className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-black/50 rounded-lg shadow-xl p-6 md:p-8 border border-white/10"
     >
       <div className="flex justify-center items-center min-h-[256px]">
-        {/* Condicionalmente renderiza <img> para imagens ou <video> para vídeos */}
+        {/* Condicionalmente renderiza <img> para imagens, <video> para vídeos diretos, ou <iframe> para vídeos do YouTube */}
         {item.media_type === "image" && item.url ? (
           <img
             // Usa o endpoint de proxy do backend para carregar a imagem
-            // BACKEND_PROXY_URL já inclui "?url=", então apenas encodeURIComponent(item.url) é necessário
             src={`${BACKEND_PROXY_URL}${encodeURIComponent(item.url)}`}
             alt={item.title}
             className="rounded-lg object-cover w-full h-auto max-h-96 md:max-h-full shadow-md"
           />
         ) : item.media_type === "video" && item.url ? (
-          <video
-            controls // Adiciona controles de reprodução ao vídeo
-            // Usa o endpoint de proxy do backend para carregar o vídeo
-            src={`${BACKEND_PROXY_URL}${encodeURIComponent(item.url)}`}
-            title={item.title}
-            className="w-full h-64 md:h-80 rounded-lg shadow-md object-cover"
-          >
-            Seu navegador não suporta a tag de vídeo.
-          </video>
+          // --- Lógica para vídeos: verifica se é YouTube embed ou vídeo direto ---
+          item.url.includes("youtube.com/embed") ||
+          item.url.includes("youtu.be") ? ( // Verifica se é URL do YouTube
+            <iframe
+              title={item.title}
+              src={item.url} // Usa a URL do YouTube diretamente, sem proxy
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-64 md:h-80 rounded-lg shadow-md"
+            ></iframe>
+          ) : (
+            // Se não for YouTube, assume que é um arquivo de vídeo direto e usa o proxy
+            <video
+              controls // Adiciona controles de reprodução ao vídeo
+              src={`${BACKEND_PROXY_URL}${encodeURIComponent(item.url)}`}
+              title={item.title}
+              className="w-full h-64 md:h-80 rounded-lg shadow-md object-cover"
+            >
+              Seu navegador não suporta a tag de vídeo.
+            </video>
+          )
         ) : (
           // Fallback para quando a mídia não estiver disponível ou não for suportada
           <div className="w-full h-64 md:h-80 flex items-center justify-center bg-gray-800 rounded-lg text-gray-400">

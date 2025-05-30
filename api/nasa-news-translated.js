@@ -41,11 +41,6 @@ async function translateText(text, targetLang = "pt-BR") {
 
 // Função principal da Serverless Function
 export default async function (req, res) {
-  // Configura CORS para permitir requisições do seu frontend Vercel
-  res.setHeader("Access-Control-Allow-Origin", "https://astrolobby.vercel.app"); // Ou '*' para testar
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
   // Lidar com requisições OPTIONS (preflight CORS)
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -115,10 +110,11 @@ export default async function (req, res) {
 
       if (deeplTranslator) {
         translatedTitle = await translateText(originalTitle, "pt-BR");
+        // CORREÇÃO AQUI: mudado de originalApodExplanation para originalExplanation
         translatedExplanation = await translateText(
-          originalApodExplanation,
+          originalExplanation,
           "pt-BR"
-        ); // Corrigido aqui, estava 'originalApodExplanation'
+        );
         isTranslated = true;
       }
 
