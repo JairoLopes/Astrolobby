@@ -1,6 +1,7 @@
 // api/image-proxy.js
 
 // Importa 'Readable' da API de streams do Node.js.
+// 'Readable.fromWeb' é usada para converter uma Web ReadableStream em uma Node.js ReadableStream.
 import { Readable } from "stream";
 
 export default async function (req, res) {
