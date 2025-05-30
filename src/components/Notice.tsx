@@ -233,7 +233,7 @@ const Notice = () => {
           <p className="mb-2">
             <span className="bg-gray-950/50 flex items-center text-2xl font-bold gap-2">
               <IoMdPlanet size={46} className="text-secondaryTheme" />
-              Foto do dia (APOD)
+              Foto do dia
             </span>
             Mergulhe em uma imagem ou vídeo fascinante do cosmos,{" "}
             <strong className="text-mainTheme">
@@ -249,7 +249,7 @@ const Notice = () => {
           <p className="">
             <span className="bg-gray-950/50 flex items-center text-2xl font-bold gap-2">
               <IoMdPlanet size={46} className="text-secondaryTheme" />
-              Últimas Notícias (APOD)
+              Últimas Notícias
             </span>
             Mantenha-se atualizado com as notícias mais recentes da biblioteca
             da NASA. Navegue por uma coleção de imagens, com resumos objetivos

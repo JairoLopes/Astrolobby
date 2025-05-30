@@ -33,8 +33,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             onClick={onClose} // Fecha o menu ao clicar no link
             className={({ isActive }) =>
               isActive
-                ? "text-violet-500 text-2xl font-semibold border-b-2 border-violet-500 pb-1"
-                : "text-white hover:text-violet-500 transition-colors text-2xl font-semibold"
+                ? "text-secondaryTheme text-2xl font-semibold border-b-2 pb-1"
+                : "text-white transition-colors text-2xl font-semibold"
             }
           >
             Home
@@ -45,8 +45,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             onClick={onClose} // Fecha o menu ao clicar no link
             className={({ isActive }) =>
               isActive
-                ? "text-violet-500 text-2xl font-semibold border-b-2 border-violet-500 pb-1"
-                : "text-white hover:text-violet-500 transition-colors text-2xl font-semibold"
+                ? "text-secondaryTheme text-2xl font-semibold border-b-2 pb-1"
+                : "text-white transition-colors text-2xl font-semibold"
             }
           >
             Explore
@@ -57,8 +57,8 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             onClick={onClose} // Fecha o menu ao clicar no link
             className={({ isActive }) =>
               isActive
-                ? "text-violet-500 text-2xl font-semibold border-b-2 border-violet-500 pb-1"
-                : "text-white hover:text-violet-500 transition-colors text-2xl font-semibold"
+                ? "text-secondaryTheme text-2xl font-semibold border-b-2 border-secondaryTheme pb-1"
+                : "text-white transition-colors text-2xl font-semibold"
             }
           >
             Tecnologia
@@ -68,7 +68,7 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           <a
             href="#notice"
             onClick={onClose} // Fecha o menu ao clicar no link
-            className="text-white hover:bg-violet-600 transition-colors bg-violet-500 p-3 rounded-lg text-2xl font-semibold mt-4"
+            className="text-white transition-colors bg-mainTheme p-3 rounded-lg text-2xl font-semibold mt-4"
           >
             Notícias
           </a>

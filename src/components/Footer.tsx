@@ -32,7 +32,7 @@ const Footer = () => {
               <li>
                 <NavLink
                   to={""}
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-secondaryTheme transition-colors"
                 >
                   Home
                 </NavLink>
@@ -40,7 +40,7 @@ const Footer = () => {
               <li>
                 <NavLink
                   to={"explore"}
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-secondaryTheme transition-colors"
                 >
                   Explore
                 </NavLink>
@@ -48,7 +48,7 @@ const Footer = () => {
               <li>
                 <NavLink
                   to={"tech"}
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-secondaryTheme transition-colors"
                 >
                   Tecnologia
                 </NavLink>
@@ -57,7 +57,7 @@ const Footer = () => {
                 {/* Link para a seção de notícias (rolagem suave) */}
                 <a
                   href="#notice"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-secondaryTheme transition-colors"
                 >
                   Notícias
                 </a>
@@ -65,7 +65,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Seção 3: Redes Sociais e Contato (Exemplo) */}
+          {/* Seção 3: Redes Sociais e Contato*/}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-xl font-semibold text-white mb-4">
               Conecte-se
@@ -76,7 +76,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="text-white hover:text-violet-400 transition-colors text-2xl"
+                className="text-white hover:text-secondaryTheme transition-colors text-2xl"
               >
                 <FaGithub />
               </a>
@@ -85,7 +85,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="text-white hover:text-violet-400 transition-colors text-2xl"
+                className="text-white hover:text-secondaryTheme transition-colors text-2xl"
               >
                 <FaLinkedin />
               </a>
@@ -94,7 +94,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
-                className="text-white hover:text-violet-400 transition-colors text-2xl"
+                className="text-white hover:text-secondaryTheme transition-colors text-2xl"
               >
                 <FaTwitter />
               </a>
@@ -126,7 +126,7 @@ const Footer = () => {
               href="https://jairolopes-dev.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondaryTheme text-lg hover:text-violet-300 transition-colors duration-300 font-semibold animate-pulse"
+              className="text-secondaryTheme text-lg transition-colors duration-300 font-semibold animate-pulse"
             >
               Jairo Lopes
             </a>

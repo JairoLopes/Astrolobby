@@ -76,7 +76,7 @@ const Navbar = () => {
         <div>
           <a
             href="#notice"
-            className="text-lg text-white font-bold bg-mainTheme p-3 rounded"
+            className="text-lg text-white font-bold bg-mainTheme p-3 rounded active:scale-90  hover:bg-secondaryTheme transition-all duration-300"
           >
             Notícias
           </a>

@@ -7,7 +7,7 @@ html {
 @theme {
   --breakpoint-home-desk: 768px;
   --spacing-navSpace: 96px;
-  --color-mainTheme: #ff0066;
+  --color-mainTheme: #e6005c;
   --color-secondaryTheme: #0080ff;
   --color-thirdTheme: #ffcc00;
 }

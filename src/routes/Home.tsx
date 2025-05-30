@@ -35,7 +35,7 @@ const Home = () => {
 
         <a
           href="#notice"
-          className="mt-8 inline-block bg-secondaryTheme active:sca text-white font-bold py-3 px-8 rounded-full transition duration-700 text-lg drop-shadow-lg"
+          className="mt-8 active:scale-90 hover:bg-mainTheme inline-block bg-secondaryTheme active:sca text-white font-bold py-3 px-8 rounded-full transition duration-400 text-lg drop-shadow-lg"
         >
           Se atualize
         </a>
